@@ -197,9 +197,6 @@ class Calculator extends Component {
     })
   }
   handleChange(event) {
-    // const x = this.primaryDisplay
-    if (event.target.value == '\n')
-      this.getResult()
     this.setState({primaryDisplay:event.target.value});
   }
   handleSubmit(event){
