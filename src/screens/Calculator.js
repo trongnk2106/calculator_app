@@ -92,6 +92,8 @@ class Calculator extends Component {
 
     this.changeMod = this.changeMod.bind(this);
     this.clearScreen = this.clearScreen.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
@@ -189,12 +191,18 @@ class Calculator extends Component {
     } else {
       res = primaryDisplay === '0' ? primaryDisplay : `-(${primaryDisplay})`;
     }
-
+   
     this.setState({
       primaryDisplay: res,
     })
   }
-
+  handleChange(event) {
+    this.setState({primaryDisplay:event.target.value});
+  }
+  handleSubmit(event){
+    this.getResult()
+    event.preventDefault();
+  }
   secondaryButtonsAlt(value) {
     return (
       <View style= {styles.calculatorCellsDouble}>
@@ -294,7 +302,13 @@ class Calculator extends Component {
               <Text style={{ fontSize: 20, color: GREY_FONT }}> {secondaryDisplay} </Text>
             </View>
             <View style={{ flexDirection: 'row-reverse' , width: '100%', marginTop: 25, marginBottom: 30}}>
-              <Text style={{ fontSize: 28, color: 'white' }}> {primaryDisplay} </Text>
+              <form onSubmit={this.handleSubmit}>
+                <input style={{ fontSize: 28, color: 'white', backgroundColor: BACKGROUND_COLOR, borderColor: BACKGROUND_COLOR,borderWidth: 0 }} 
+                type="text" 
+                value={this.state.primaryDisplay} 
+                onChange={this.handleChange}
+                />
+              </form>
             </View>
 
             <View style={{ flexDirection: 'row' }}>
