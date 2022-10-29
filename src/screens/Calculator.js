@@ -136,7 +136,9 @@ class Calculator extends Component {
         history: submitHistory,
       });
     } catch(e) {
-        console.log(e);
+      this.setState({
+        primaryDisplay: 'Syntax ERROR'
+      })
     }
   }
 
