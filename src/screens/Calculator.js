@@ -4,6 +4,7 @@ import {
   View,
   TouchableHighlight,
   Image,
+  TextInput,
 } from 'react-native';
 import {
   BACKGROUND_COLOR,
@@ -92,8 +93,6 @@ class Calculator extends Component {
 
     this.changeMod = this.changeMod.bind(this);
     this.clearScreen = this.clearScreen.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
@@ -136,7 +135,9 @@ class Calculator extends Component {
         history: submitHistory,
       });
     } catch(e) {
-        console.log(e);
+      this.setState({
+        primaryDisplay: 'Syntax ERROR'
+      })
     }
   }
 
@@ -195,13 +196,6 @@ class Calculator extends Component {
     this.setState({
       primaryDisplay: res,
     })
-  }
-  handleChange(event) {
-    this.setState({primaryDisplay:event.target.value});
-  }
-  handleSubmit(event){
-    this.getResult()
-    event.preventDefault();
   }
   secondaryButtonsAlt(value) {
     return (
@@ -301,30 +295,27 @@ class Calculator extends Component {
             <View style={{ width: '100%', flexDirection: 'row-reverse', marginTop: 30 }}>
               <Text style={{ fontSize: 20, color: GREY_FONT }}> {secondaryDisplay} </Text>
             </View>
-            <View style={{ flexDirection: 'row-reverse' , width: '100%', marginTop: 25, marginBottom: 30}}>
-              <form onSubmit={this.handleSubmit}>
-                <input style={{ fontSize: 28, color: 'white', backgroundColor: BACKGROUND_COLOR, borderColor: BACKGROUND_COLOR,borderWidth: 0 }} 
-                type="text" 
-                value={this.state.primaryDisplay} 
-                onChange={this.handleChange}
-                />
-              </form>
-            </View>
-
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ width: '100%', flexDirection: 'row-reverse' }}>
-                <TouchableHighlight
-                  onPress={() => this.backPress()}
-                >
-                  <Image source={HISTORY_IMAGE} style={{ width: 30, height: 18 }} />
-                </TouchableHighlight>
-              </View>
-            </View>
+            <TextInput
+              style={{textAlign: 'right', marginTop: 25,fontSize: 28, color: 'white', backgroundColor: BACKGROUND_COLOR, borderColor: BACKGROUND_COLOR,borderWidth: 0}}
+              onChangeText={primaryDisplay => this.setState({primaryDisplay})}
+              onSubmitEditing = {()=>this.getResult()}
+              value={primaryDisplay}
+              keyboardType= "numbers-and-punctuation"
+            />
           </View>
         </View>
 
         {/* Body part */}
         <View style={styles.body}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ width: '100%', flexDirection: 'row-reverse', marginBottom:3, right: 7 }}>
+              <TouchableHighlight
+                onPress={() => this.backPress()}
+              >
+                <Image source={HISTORY_IMAGE} style={{ width: 30, height: 18, }} />
+              </TouchableHighlight>
+            </View>
+          </View>
           {this.renderUpperPart()}
           {/* Second part */}
           {this.renderSecondRow()}
