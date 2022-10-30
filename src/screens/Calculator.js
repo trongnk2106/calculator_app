@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   Text,
   View,
@@ -126,15 +126,20 @@ class Calculator extends Component {
       let submitHistory = history;
       let result = `${eval(submitString)}`;
       result = `${parseFloat(Number(result).toFixed(7))}`;
-      submitHistory.push({
-        'equation' : primaryDisplay,
-        result,
-      })
-      this.setState({
-        primaryDisplay: result,
-        secondaryDisplay: primaryDisplay,
-        history: submitHistory,
-      });
+      if (primaryDisplay !== result)
+      {
+        submitHistory.push({
+          'equation' : primaryDisplay,
+          result,
+        })
+        this.setState({
+          primaryDisplay: result,
+          secondaryDisplay: primaryDisplay,
+          history: submitHistory,
+        });        
+      }
+
+
     } catch(e) {
       this.setState({
         primaryDisplay: 'Syntax ERROR'

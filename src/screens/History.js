@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Animated, Text, View, TextInput } from 'react-native';
+import { Animated, Text, View, TextInput, ScrollView } from 'react-native';
 // import { ListItem, SearchBar } from 'react-native-elements';
 
 class History extends React.Component {
@@ -8,7 +8,11 @@ class History extends React.Component {
     const fadeAnim = new Animated.Value(0);
     this.state = {
       fadeAnim, // Initial value for opacity: 0
+      searchInput: false,  // history search 
+      searchText: '',
+      filteredHistory: [],
     };
+    this.searchFilter = this.searchFilter.bind(this);
   }
 
   componentDidMount() {
@@ -35,10 +39,31 @@ class History extends React.Component {
     ).start();
   }
 
-  render() {
-    let { fadeAnim } = this.state;
+  searchFilter(text) {
     let { historyList } = this.props;
+    if (text) {
+      const data = historyList.filter((item) => {
+        return (
+          item.equation.indexOf(text) > -1 || item.result.indexOf(text) > -1
+        );
+      });
+      this.setState({
+        filteredHistory: data,
+        searchText: text,
+      });
+    }
+    else {
+      this.setState({
+        searchInput: false,
+        searchText: '',
+      });
+    }
+  }
 
+  render() {
+    let { fadeAnim, searchInput, filteredHistory} = this.state;
+    let { historyList } = this.props;
+    console.log(filteredHistory)
     return (
       <Animated.View      
         style={{
@@ -57,32 +82,41 @@ class History extends React.Component {
         }}
       >
         
-       <View>
-        <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-              padding: 10,
-              margin: 20,
-            }}
-            placeholder="Type Here!"
-            lightTheme
-            round
-            autoCorrect={false}
-            //onChangeText={(newText) => setText(newText)}
-            //defaultValue={text}
-        />
-      </View>
+        <View>
+          <TextInput
+              style={{
+                height: 40,
+                borderColor: 'gray',
+                borderWidth: 1,
+                padding: 10,
+                margin: 20,
+              }}
+              placeholder="Search history"
+              lightTheme
+              round
+              autoCorrect={false}
+              onChangeText={(text) => {
+                this.setState({
+                  searchInput: true,
+                });
+                this.searchFilter(text);
+              }}
+          />
+        </View>
 
-      {historyList.map((h, idx) => {
-        const { equation, result} = h;
-        return (
-            <View key={idx} style={{ flexDirection: 'row', marginTop: 7, marginBottom: 7, marginLeft: 15}}>
-              <Text>{equation} = {result} </Text>
-            </View>
-        );
-      })}
+        <ScrollView>
+          {
+          (searchInput ? filteredHistory : historyList).map((item, index) => {
+            const { equation, result} = item;
+            return (
+              <View
+                key={index}
+                style={{ flexDirection: 'row', marginTop: 7, marginBottom: 7, marginLeft: 15}}>
+                <Text>{equation.toString()} = {result.toString()} </Text>
+              </View>
+            );
+          })}
+        </ScrollView>
 
       </Animated.View>
     );
