@@ -14,6 +14,7 @@ import {
   GREY_FONT,
   HISTORY_IMAGE,
 } from './common/Constant';
+import History from './History';
 
 const styles = 
 {
@@ -308,7 +309,16 @@ class Calculator extends Component {
         {/* Body part */}
         <View style={styles.body}>
           <View style={{ flexDirection: 'row' }}>
-            <View style={{ width: '100%', flexDirection: 'row-reverse', marginBottom:3, right: 7 }}>
+            <View style={{ width: '50%'}}>
+              <TouchableHighlight
+                onPress={() => this.toggleModal()}
+              >
+                <Text style={{ color: 'white', fontSize: 14}}>
+                  {historyModal ? 'KEYPAD': 'HISTORY' }
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <View style={{ width: '50%', flexDirection: 'row-reverse', marginBottom:3, right: 7 }}>
               <TouchableHighlight
                 onPress={() => this.backPress()}
               >
@@ -325,6 +335,7 @@ class Calculator extends Component {
           {this.renderFourthRow()}
           {/* fifth part */}
           {this.renderFifthRow()}
+          { historyModal && <History historyList={history} />}
         </View>
 
       </View>
