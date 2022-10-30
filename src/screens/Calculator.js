@@ -208,6 +208,7 @@ class Calculator extends Component {
       <View style= {styles.calculatorCellsDouble}>
         <TouchableHighlight
           style={[styles.secondaryButtons, { width: '99%', alignItems: 'baseline'}]}
+          onPress={() => this.onPressHandler(value)}
         >
           <Text style={[styles.secondaryButtonsText, { marginLeft: '50%'}]}>{value}</Text>
         </TouchableHighlight>
