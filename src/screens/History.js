@@ -63,7 +63,6 @@ class History extends React.Component {
   render() {
     let { fadeAnim, searchInput, filteredHistory} = this.state;
     let { historyList } = this.props;
-    console.log(filteredHistory)
     return (
       <Animated.View      
         style={{
