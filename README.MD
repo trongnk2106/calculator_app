@@ -27,7 +27,6 @@ Sau đó thực hiện:
 
 
 		npm install
-		npm install --save-dev sharp-cli
 		npm start
 
 
